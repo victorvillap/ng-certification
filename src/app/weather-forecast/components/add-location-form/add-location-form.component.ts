@@ -8,7 +8,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class AddLocationFormComponent implements OnInit {
 
-  private readonly zipCodePattern: string = '^[+ 0-9]{5}$';
+  private readonly zipCodePattern: string = '^[+ 0-9]{5}(-[0-9]{4})?$';
   @Output() onLocationAdded: EventEmitter<string> = new EventEmitter<string>();
 
   locationForm: FormGroup = this.formBuilder.group({
@@ -23,6 +23,7 @@ export class AddLocationFormComponent implements OnInit {
 
   saveLocation(): void {
     const zipValue: string = this.locationForm.get('zip')?.value;
+    this.locationForm.reset();
     this.onLocationAdded.emit(zipValue);
   }
 
