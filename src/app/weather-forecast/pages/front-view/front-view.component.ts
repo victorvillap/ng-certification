@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FrontViewService } from 'app/weather-forecast/services/front-view.service';
 
 @Component({
   selector: 'app-front-view',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FrontViewComponent implements OnInit {
 
-  constructor() { }
+  constructor(private viewService: FrontViewService) { }
 
   ngOnInit(): void {
+  }
+
+  addLocation(zipCode: string) {
+    console.log('view service graba', zipCode);
+    this.viewService.addZipCode(zipCode);
   }
 
 }

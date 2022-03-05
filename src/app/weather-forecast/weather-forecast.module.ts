@@ -4,6 +4,7 @@ import { AddLocationFormComponent } from './components/add-location-form/add-loc
 import { FrontViewComponent } from './pages/front-view/front-view.component';
 import { LocationCurrentConditionComponent } from './components/location-current-condition/location-current-condition.component';
 import { LocationFutureForecastComponent } from './components/location-future-forecast/location-future-forecast.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -15,7 +16,8 @@ import { LocationFutureForecastComponent } from './components/location-future-fo
     LocationFutureForecastComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule
   ],
   exports: [
     FrontViewComponent

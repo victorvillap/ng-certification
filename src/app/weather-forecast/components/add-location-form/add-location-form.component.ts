@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'add-location-form',
@@ -7,9 +8,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddLocationFormComponent implements OnInit {
 
-  constructor() { }
+  private readonly zipCodePattern: string = '^[+ 0-9]{5}$';
+  @Output() onLocationAdded: EventEmitter<string> = new EventEmitter<string>();
+
+  locationForm: FormGroup = this.formBuilder.group({
+    zip: ['', [Validators.required, Validators.pattern(this.zipCodePattern)]]
+  });
+
+
+  constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
+  }
+
+  saveLocation(): void {
+    const zipValue: string = this.locationForm.get('zip')?.value;
+    this.onLocationAdded.emit(zipValue);
   }
 
 }
