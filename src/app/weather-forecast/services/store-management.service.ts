@@ -9,14 +9,14 @@ export class StoreManagementService {
   private zipCodes: string[] = [];
 
   saveZipCode(zipCode: string): void {
-    const zipCodes = this.loadZipCodes();
+    const zipCodes = this.getStoredZipCodes();
     if (!zipCodes.includes(zipCode)) {
       this.zipCodes.push(zipCode)
       localStorage.setItem(this.zipCodesKey, JSON.stringify(zipCodes))
     }
   }
 
-  loadZipCodes(): string[] {
+  getStoredZipCodes(): string[] {
     if (this.zipCodes.length === 0) {
       this.zipCodes = this.parseZipCodesFromLocalStorage();
     }

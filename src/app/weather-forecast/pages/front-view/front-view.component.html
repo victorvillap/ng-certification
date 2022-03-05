@@ -2,9 +2,9 @@
   <add-location-form
     (onLocationAdded)="addLocation($event)"
   ></add-location-form>
-  <div>
+  <div *ngFor="let zipCode of storedZipCodes">
     <location-current-condition></location-current-condition>
-    <hr />
-    <location-future-forecast></location-future-forecast>
+    <!-- <hr />
+    <location-future-forecast></location-future-forecast> -->
   </div>
 </div>
