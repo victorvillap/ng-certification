@@ -1,0 +1,10 @@
+<div class="well flex" *ngIf="zipCodesWithError.length > 0">
+  <div>
+    <h4>
+      Could not retrieve the weather conditions for the following zipcodes:
+    </h4>
+    <ul *ngFor="let zipCode of zipCodesWithError">
+      <li>{{ zipCode }}</li>
+    </ul>
+  </div>
+</div>

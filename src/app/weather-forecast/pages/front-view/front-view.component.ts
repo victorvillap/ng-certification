@@ -1,4 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ApiError } from 'app/weather-forecast/interfaces/api-error.interface';
+import { ZipcodeWeatherStatus } from 'app/weather-forecast/interfaces/zipcode-weather-status.interface';
 import { FrontViewService } from 'app/weather-forecast/services/front-view.service';
 import { Subscription } from 'rxjs';
 
@@ -9,22 +11,39 @@ import { Subscription } from 'rxjs';
 })
 export class FrontViewComponent implements OnInit, OnDestroy {
 
-  storedZipCodes: string[] = [];
-  private zipCodesSubscription!: Subscription;
+  storedWeatherConditions: ZipcodeWeatherStatus[] = [];
+  private weatherConditionsSubscription!: Subscription;
 
-  constructor(private viewService: FrontViewService) { }
+  apiErrors: ApiError[] = [];
+  private errorsSubscription!: Subscription;
+
+
+  constructor(public viewService: FrontViewService) { }
 
   ngOnInit(): void {
     this.viewService.initView();
-    this.zipCodesSubscription = this.viewService.storedZipCodes.subscribe(zipCodes => this.storedZipCodes = zipCodes);
+    this.weatherConditionsSubscription = this.viewService.weatherConditions
+      .subscribe(zipCodes => this.storedWeatherConditions = zipCodes);
+
+    this.errorsSubscription = this.viewService.apiErrors
+      .subscribe(errors => this.apiErrors = errors);
   }
 
   ngOnDestroy(): void {
-    this.zipCodesSubscription?.unsubscribe();
+    this.weatherConditionsSubscription?.unsubscribe();
+    this.errorsSubscription?.unsubscribe();
   }
 
   addLocation(zipCode: string) {
     this.viewService.addZipCode(zipCode);
+  }
+
+  removeLocation(zipCode: string) {
+    this.viewService.removeZipCode(zipCode);
+  }
+
+  areErrorsInApiCalls(): boolean {
+    return this.apiErrors?.length > 0;
   }
 
 }

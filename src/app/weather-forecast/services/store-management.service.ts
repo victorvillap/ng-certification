@@ -16,6 +16,12 @@ export class StoreManagementService {
     }
   }
 
+  deleteZipCode(zipCode: string): void {
+    const zipCodes = this.getStoredZipCodes().filter((code: string) => code !== zipCode);
+    this.zipCodes = zipCodes;
+    localStorage.setItem(this.zipCodesKey, JSON.stringify(zipCodes));
+  }
+
   getStoredZipCodes(): string[] {
     if (this.zipCodes.length === 0) {
       this.zipCodes = this.parseZipCodesFromLocalStorage();

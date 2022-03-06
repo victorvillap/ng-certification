@@ -2,8 +2,14 @@
   <add-location-form
     (onLocationAdded)="addLocation($event)"
   ></add-location-form>
-  <div *ngFor="let zipCode of storedZipCodes">
-    <location-current-condition></location-current-condition>
+  <div *ngFor="let weatherCondition of storedWeatherConditions">
+    <location-current-condition
+      [weatherInfo]="weatherCondition"
+      (onRemoveLocationClicked)="removeLocation($event)"
+    ></location-current-condition>
+    <zipcode-list-error
+      [apiErrors]="viewService.apiErrors"
+    ></zipcode-list-error>
     <!-- <hr />
     <location-future-forecast></location-future-forecast> -->
   </div>
