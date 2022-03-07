@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ZipcodeWeatherStatus } from 'app/weather-forecast/interfaces/zipcode-weather-status.interface';
+import { mapConditionToImageName } from 'app/weather-forecast/utils/map-condition-to-image';
 
 @Component({
   selector: 'location-current-condition',
@@ -17,18 +18,7 @@ export class LocationCurrentConditionComponent implements OnInit {
   }
 
   getImageForCondition(condition: string) {
-    let imageName = 'sun';
-    switch (condition.toLowerCase()) {
-      case 'clear':
-        imageName = 'sun';
-        break;
-      case 'clouds':
-        imageName = 'clouds';
-        break;
-      case 'snow':
-        imageName = 'snow';
-        break;
-    }
+    const imageName = mapConditionToImageName(condition);
     return `https://www.angulartraining.com/images/weather/${imageName}.png`
   }
 

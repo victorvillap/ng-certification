@@ -9,7 +9,7 @@
       {{ weatherInfo.minTemperature | number: "1.0-0" }}
     </p>
     <p>
-      <a href="/forecast/95742"
+      <a [routerLink]="['/', 'forecast', weatherInfo.zipCode]"
         >Show 5-day forecast for {{ weatherInfo.locationName }}</a
       >
     </p>

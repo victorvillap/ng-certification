@@ -40,15 +40,15 @@ export class FrontViewService {
     this.storageService.deleteZipCode(zipCode);
   }
 
-  private updateSavedZipCodes(): void {
-    this.storedZipCodes$.next(this.storageService.getStoredZipCodes());
-  }
-
   getWeatherConditionsForZipCodeList(zipCodes: string[]): void {
     this.clearErrors();
     const codesAlreadyResolved = this.weatherConditions$.value.map(weatherReport => weatherReport.zipCode);
     const newZipCodes = zipCodes.filter(zipCode => !codesAlreadyResolved.includes(zipCode));
     newZipCodes.forEach(zipCode => this.getWeatherConditionsForZipCode(zipCode));
+  }
+
+  private updateSavedZipCodes(): void {
+    this.storedZipCodes$.next(this.storageService.getStoredZipCodes());
   }
 
   private getWeatherConditionsForZipCode(zipCode: string): void {

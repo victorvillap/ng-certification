@@ -1,53 +1,25 @@
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="forecast">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">5-day forecast for Rancho Cordova</h3>
+      <h3 class="panel-title">5-day forecast for {{ forecast.name }}</h3>
     </div>
-    <ul class="list-group">
-      <!---->
+    <ul class="list-group" *ngFor="let prediction of forecast.forecast">
       <li class="list-group-item">
-        Monday, Mar 23: Rain - Min: 45 - Max: 59
+        {{ prediction.date | date: "EEEE, MMM d" }}:
+        {{ prediction.condition }} - Min:
+        {{ prediction.minTemperature | number: "1.0-0" }} - Max:
+        {{ prediction.maxTemperature | number: "1.0-0" }}
 
-        <img
-          class="icon"
-          src="https://www.angulartraining.com/images/weather/rain.png"
-        />
-      </li>
-      <li class="list-group-item">
-        Tuesday, Mar 24: Rain - Min: 39 - Max: 52
-
-        <img
-          class="icon"
-          src="https://www.angulartraining.com/images/weather/sun.png"
-        />
-      </li>
-      <li class="list-group-item">
-        Wednesday, Mar 25: Rain - Min: 36 - Max: 54
-
-        <img
-          class="icon"
-          src="https://www.angulartraining.com/images/weather/rain.png"
-        />
-      </li>
-      <li class="list-group-item">
-        Thursday, Mar 26: Clear - Min: 37 - Max: 56
-
-        <img
-          class="icon"
-          src="https://www.angulartraining.com/images/weather/clouds.png"
-        />
-      </li>
-      <li class="list-group-item">
-        Friday, Mar 27: Clear - Min: 40 - Max: 57
-
-        <img
-          class="icon"
-          src="https://www.angulartraining.com/images/weather/snow.png"
-        />
+        <img class="icon" [src]="getImageForCondition(prediction.condition)" />
       </li>
     </ul>
   </div>
-  <button class="btn btn-success" tabindex="0" id="mainPageBtn">
+  <button
+    class="btn btn-success"
+    tabindex="0"
+    id="mainPageBtn"
+    [routerLink]="['/main']"
+  >
     &lt; Back to main page
   </button>
 </div>

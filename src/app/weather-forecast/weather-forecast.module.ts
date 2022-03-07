@@ -8,6 +8,8 @@ import { LocationCurrentConditionComponent } from './components/location-current
 import { LocationFutureForecastComponent } from './components/location-future-forecast/location-future-forecast.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ZipcodeListErrorComponent } from './components/zipcode-list-error/zipcode-list-error.component';
+import { RouterModule } from '@angular/router';
+import { ForecastViewComponent } from './pages/forecast-view/forecast-view.component';
 
 
 
@@ -17,15 +19,18 @@ import { ZipcodeListErrorComponent } from './components/zipcode-list-error/zipco
     FrontViewComponent,
     LocationCurrentConditionComponent,
     LocationFutureForecastComponent,
-    ZipcodeListErrorComponent
+    ZipcodeListErrorComponent,
+    ForecastViewComponent
   ],
   imports: [
     CommonModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule
   ],
   exports: [
-    FrontViewComponent
+    FrontViewComponent,
+    ForecastViewComponent
   ]
 })
 export class WeatherForecastModule { }
