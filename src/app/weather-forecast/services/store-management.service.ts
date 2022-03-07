@@ -4,12 +4,12 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class StoreManagementService {
-  private readonly zipCodesKey = 'zipCodes';
+  private readonly zipCodesKey: string = 'zipCodes';
 
   private zipCodes: string[] = [];
 
   saveZipCode(zipCode: string): void {
-    const zipCodes = this.getStoredZipCodes();
+    const zipCodes: string[] = this.getStoredZipCodes();
     if (!zipCodes.includes(zipCode)) {
       this.zipCodes.push(zipCode)
       localStorage.setItem(this.zipCodesKey, JSON.stringify(zipCodes))
@@ -17,7 +17,7 @@ export class StoreManagementService {
   }
 
   deleteZipCode(zipCode: string): void {
-    const zipCodes = this.getStoredZipCodes().filter((code: string) => code !== zipCode);
+    const zipCodes: string[] = this.getStoredZipCodes().filter((code: string) => code !== zipCode);
     this.zipCodes = zipCodes;
     localStorage.setItem(this.zipCodesKey, JSON.stringify(zipCodes));
   }
@@ -31,7 +31,7 @@ export class StoreManagementService {
   }
 
   private parseZipCodesFromLocalStorage(): string[] {
-    const storedZipCodes = localStorage.getItem(this.zipCodesKey);
+    const storedZipCodes: string | null = localStorage.getItem(this.zipCodesKey);
     if (!storedZipCodes) {
       return [];
     }

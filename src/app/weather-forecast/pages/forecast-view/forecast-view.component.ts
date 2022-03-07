@@ -13,7 +13,7 @@ export class ForecastViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      const zipCode = params['zipcode'];
+      const zipCode: string = params['zipcode'];
       this.viewService.initView(zipCode);
     })
   }

@@ -35,15 +35,16 @@ export class FrontViewService {
   }
 
   removeZipCode(zipCode: string): void {
-    const weatherConditions = this.weatherConditions$.value;
+    const weatherConditions: ZipcodeWeatherStatus[] = this.weatherConditions$.value;
     this.weatherConditions$.next(weatherConditions.filter((condition: ZipcodeWeatherStatus) => condition.zipCode !== zipCode));
     this.storageService.deleteZipCode(zipCode);
   }
 
   getWeatherConditionsForZipCodeList(zipCodes: string[]): void {
     this.clearErrors();
-    const codesAlreadyResolved = this.weatherConditions$.value.map(weatherReport => weatherReport.zipCode);
-    const newZipCodes = zipCodes.filter(zipCode => !codesAlreadyResolved.includes(zipCode));
+    const codesAlreadyResolved: string[] = this.weatherConditions$.value
+      .map(weatherReport => weatherReport.zipCode);
+    const newZipCodes: string[] = zipCodes.filter(zipCode => !codesAlreadyResolved.includes(zipCode));
     newZipCodes.forEach(zipCode => this.getWeatherConditionsForZipCode(zipCode));
   }
 
@@ -63,7 +64,7 @@ export class FrontViewService {
   }
 
   private addWeatherConditionsToList(weatherCondition: ZipcodeWeatherStatus): void {
-    const savedList = this.weatherConditions$.value;
+    const savedList: ZipcodeWeatherStatus[] = this.weatherConditions$.value;
     savedList.push(weatherCondition);
     this.weatherConditions$.next(savedList);
   }
@@ -73,7 +74,7 @@ export class FrontViewService {
   }
 
   private addError(error: HttpErrorResponse, zipCode: string) {
-    const storedErrors = this.apiErrors$.value;
+    const storedErrors: ApiError[] = this.apiErrors$.value;
     const apiError: ApiError = {
       zipCode: zipCode,
       errorMessage: error.message

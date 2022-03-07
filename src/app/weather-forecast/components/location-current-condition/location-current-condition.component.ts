@@ -17,12 +17,12 @@ export class LocationCurrentConditionComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getImageForCondition(condition: string) {
+  getImageForCondition(condition: string): string {
     const imageName = mapConditionToImageName(condition);
     return `https://www.angulartraining.com/images/weather/${imageName}.png`
   }
 
-  removeLocation() {
+  removeLocation(): void {
     this.onRemoveLocationClicked.emit(this.weatherInfo.zipCode);
   }
 

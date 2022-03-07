@@ -3,10 +3,11 @@ import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
 import { Observable, } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Forecast, ZipCodeForecastResponse } from '../interfaces/zipcode-forecast-response.interface';
-import { WeatherCondition } from '../interfaces/zipcode-status-response.interface';
+import { Forecast, ZipCodeForecastResponse } from '../interfaces/weather-api/zipcode-forecast-response.interface';
+import { WeatherCondition } from '../interfaces/weather-api/zipcode-status-response.interface';
 import { DailyForecast, ZipcodeWeatherForecast } from '../interfaces/zipcode-weather-forecast';
 import { ZipcodeWeatherStatus } from '../interfaces/zipcode-weather-status.interface';
+import { unixTimestampToDate } from '../utils/unix-timestamp-to-date';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class WeatherService {
   constructor(private httpClient: HttpClient) { }
 
   getWeatherConditionForZipCode(zipCode: string): Observable<ZipcodeWeatherStatus> {
-    const serviceUrl = this.getZipCodeCurrentConditionUrl(zipCode);
+    const serviceUrl: string = this.getZipCodeCurrentConditionUrl(zipCode);
     return this.httpClient.get<WeatherCondition>(serviceUrl)
       .pipe(
         map((weatherCondition: WeatherCondition) => this.mapServiceResultToWeatherStatus(zipCode, weatherCondition)),
@@ -24,7 +25,7 @@ export class WeatherService {
   }
 
   getWeatherForecastForZipCode(zipCode: string): Observable<ZipcodeWeatherForecast> {
-    const serviceUrl = this.getZipcodeForecastUrl(zipCode);
+    const serviceUrl: string = this.getZipcodeForecastUrl(zipCode);
     return this.httpClient.get<ZipCodeForecastResponse>(serviceUrl)
       .pipe(
         map((forecast: ZipCodeForecastResponse) => this.mapForecastApiResultToApplicationFormat(forecast))
@@ -32,17 +33,17 @@ export class WeatherService {
   }
 
   private getZipCodeCurrentConditionUrl(zipCode: string): string {
-    const baseUrl = environment.serviceBaseUrl;
-    const weatherService = environment.weatherService;
-    const units = environment.weatherServiceUnits;
-    const countryCode = environment.weatherServiceCountry;
-    const apiKey = environment.weatherServiceApiKey;
+    const baseUrl: string = environment.serviceBaseUrl;
+    const weatherService: string = environment.weatherService;
+    const units: string = environment.weatherServiceUnits;
+    const countryCode: string = environment.weatherServiceCountry;
+    const apiKey: string = environment.weatherServiceApiKey;
 
     return `${baseUrl}/${weatherService}?zip=${zipCode},${countryCode}&units=${units}&appid=${apiKey}`;
   }
 
   private mapServiceResultToWeatherStatus(zipcode: string, weatherCondition: WeatherCondition): ZipcodeWeatherStatus {
-    const result = {
+    const result: ZipcodeWeatherStatus = {
       zipCode: zipcode,
       locationName: weatherCondition.name,
       currentConditionName: weatherCondition.weather[0]?.main,
@@ -56,18 +57,18 @@ export class WeatherService {
   }
 
   private getZipcodeForecastUrl(zipCode: string): string {
-    const baseUrl = environment.serviceBaseUrl;
-    const forecastService = environment.forecastService;
-    const units = environment.weatherServiceUnits;
-    const countryCode = environment.weatherServiceCountry;
-    const apiKey = environment.weatherServiceApiKey;
-    const forecastDays = environment.forecastDays;
+    const baseUrl: string = environment.serviceBaseUrl;
+    const forecastService: string = environment.forecastService;
+    const units: string = environment.weatherServiceUnits;
+    const countryCode: string = environment.weatherServiceCountry;
+    const apiKey: string = environment.weatherServiceApiKey;
+    const forecastDays: number = environment.forecastDays;
 
     return `${baseUrl}/${forecastService}?zip=${zipCode},${countryCode}&units=${units}&cnt=${forecastDays}&appid=${apiKey}`;
   }
 
   private mapForecastApiResultToApplicationFormat(forecast: ZipCodeForecastResponse): ZipcodeWeatherForecast {
-    const dailyForecasts = forecast.list.map(element => this.mapApiDailyForecastToApplicationFormat(element));
+    const dailyForecasts: DailyForecast[] = forecast.list.map(element => this.mapApiDailyForecastToApplicationFormat(element));
     return {
       name: forecast.city.name,
       forecast: dailyForecasts
@@ -75,7 +76,7 @@ export class WeatherService {
   }
 
   private mapApiDailyForecastToApplicationFormat(element: Forecast): DailyForecast {
-    const forecastDate = this.unixTimestampToDate(element.dt);
+    const forecastDate: Date = unixTimestampToDate(element.dt);
     return {
       date: forecastDate,
       condition: element.weather[0]?.main,
@@ -83,9 +84,4 @@ export class WeatherService {
       minTemperature: element.temp.min
     }
   }
-
-  private unixTimestampToDate(timeStamp: number): Date {
-    return new Date(timeStamp * 1000);
-  }
-
 }

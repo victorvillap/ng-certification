@@ -34,11 +34,11 @@ export class FrontViewComponent implements OnInit, OnDestroy {
     this.errorsSubscription?.unsubscribe();
   }
 
-  addLocation(zipCode: string) {
+  addLocation(zipCode: string): void {
     this.viewService.addZipCode(zipCode);
   }
 
-  removeLocation(zipCode: string) {
+  removeLocation(zipCode: string): void {
     this.viewService.removeZipCode(zipCode);
   }
 
