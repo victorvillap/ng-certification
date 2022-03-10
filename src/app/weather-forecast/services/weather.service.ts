@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
-import { Observable, } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of, } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { ApiError } from '../interfaces/api-error.interface';
 import { Forecast, ZipCodeForecastResponse } from '../interfaces/weather-api/zipcode-forecast-response.interface';
 import { WeatherCondition } from '../interfaces/weather-api/zipcode-status-response.interface';
 import { DailyForecast, ZipcodeWeatherForecast } from '../interfaces/zipcode-weather-forecast';
@@ -24,11 +25,17 @@ export class WeatherService {
       );
   }
 
-  getWeatherForecastForZipCode(zipCode: string): Observable<ZipcodeWeatherForecast> {
+  getWeatherForecastForZipCode(zipCode: string): Observable<ZipcodeWeatherForecast | ApiError> {
     const serviceUrl: string = this.getZipcodeForecastUrl(zipCode);
     return this.httpClient.get<ZipCodeForecastResponse>(serviceUrl)
       .pipe(
-        map((forecast: ZipCodeForecastResponse) => this.mapForecastApiResultToApplicationFormat(forecast))
+        map((forecast: ZipCodeForecastResponse) => this.mapForecastApiResultToApplicationFormat(forecast)),
+        catchError((err: HttpErrorResponse) => {
+          return of({
+            zipCode: zipCode,
+            errorMessage: err.message
+          });
+        })
       )
   }
 
